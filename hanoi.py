@@ -1,6 +1,11 @@
 """
+<<<<<<< HEAD
 Torres de Hanoi - Juego educativo para entender la estructura de PILAS (Stacks)
 ================================================================================
+=======
+Torres de Hanoi - Lógica del juego con PILAS (Stacks)
+=====================================================
+>>>>>>> 65115aee89f17bd00f473bd088888e3abc55e984
 
 ¿Qué es una Pila (Stack)?
 -------------------------
@@ -20,9 +25,20 @@ Operaciones principales de una pila:
 Cada torre es literalmente una pila de discos. Solo puedes tocar el disco
 de la cima (pop) y solo puedes colocar un disco encima de la cima (push).
 Esto modela perfectamente el comportamiento LIFO.
+<<<<<<< HEAD
 """
 
 from typing import List, Optional
+=======
+
+Arquitectura (refactorizada):
+- Este módulo contiene SOLO la lógica del juego (sin imprimir en pantalla).
+- hanoi_consola.py  -> interfaz de consola (ASCII).
+- hanoi_grafico.py  -> interfaz gráfica con tkinter (gráficas simples).
+"""
+
+from typing import Dict, List, Optional, Tuple
+>>>>>>> 65115aee89f17bd00f473bd088888e3abc55e984
 
 
 class Pila:
@@ -81,6 +97,11 @@ class Pila:
 class TorresDeHanoi:
     """
     Juego de las Torres de Hanoi usando 3 pilas como torres.
+<<<<<<< HEAD
+=======
+    Lógica pura: no imprime ni dibuja; devuelve mensajes de texto
+    para que cualquier interfaz (consola o gráfica) los muestre.
+>>>>>>> 65115aee89f17bd00f473bd088888e3abc55e984
 
     Reglas clásicas:
     1. Solo se puede mover un disco a la vez (el de la cima de una torre).
@@ -97,7 +118,11 @@ class TorresDeHanoi:
 
         self.num_discos = num_discos
         # Tres pilas que representan las torres A, B y C.
+<<<<<<< HEAD
         self.torres: dict = {
+=======
+        self.torres: Dict[str, Pila] = {
+>>>>>>> 65115aee89f17bd00f473bd088888e3abc55e984
             "A": Pila(),
             "B": Pila(),
             "C": Pila(),
@@ -109,6 +134,7 @@ class TorresDeHanoi:
 
         self.movimientos: int = 0
         self.ganado: bool = False
+<<<<<<< HEAD
 
     # --- Lógica del juego -------------------------------------------------
 
@@ -118,11 +144,26 @@ class TorresDeHanoi:
         Devuelve True si el movimiento fue válido y se realizó.
         Devuelve False si el movimiento es inválido (sin lanzar excepciones
         para que el juego pueda continuar).
+=======
+        # (origen, destino, disco) del último movimiento válido.
+        self.ultimo_movimiento: Optional[Tuple[str, str, int]] = None
+
+    # --- Lógica del juego -------------------------------------------------
+
+    def mover(self, origen: str, destino: str) -> Tuple[bool, str]:
+        """
+        Intenta mover el disco de la cima de `origen` a `destino`.
+
+        Devuelve una tupla (éxito, mensaje):
+        - éxito = True si el movimiento fue válido y se realizó.
+        - mensaje describe el resultado (para que la UI lo muestre).
+>>>>>>> 65115aee89f17bd00f473bd088888e3abc55e984
         """
         origen = origen.upper()
         destino = destino.upper()
 
         if origen not in self.torres or destino not in self.torres:
+<<<<<<< HEAD
             print("✗ Torres válidas: A, B o C.")
             return False
         if origen == destino:
@@ -131,6 +172,13 @@ class TorresDeHanoi:
         if self.torres[origen].is_empty():
             print(f"✗ La torre {origen} está vacía, no hay disco para mover.")
             return False
+=======
+            return False, "Torres válidas: A, B o C."
+        if origen == destino:
+            return False, "Origen y destino son la misma torre."
+        if self.torres[origen].is_empty():
+            return False, f"La torre {origen} está vacía, no hay disco para mover."
+>>>>>>> 65115aee89f17bd00f473bd088888e3abc55e984
 
         disco_origen = self.torres[origen].peek()
 
@@ -138,20 +186,34 @@ class TorresDeHanoi:
         if not self.torres[destino].is_empty():
             disco_destino = self.torres[destino].peek()
             if disco_origen > disco_destino:
+<<<<<<< HEAD
                 print(
                     f"✗ Movimiento inválido: el disco {disco_origen} no puede "
                     f"ponerse sobre el disco {disco_destino} (más pequeño)."
                 )
                 return False
+=======
+                return False, (
+                    f"Movimiento inválido: el disco {disco_origen} no puede "
+                    f"ponerse sobre el disco {disco_destino} (más pequeño)."
+                )
+>>>>>>> 65115aee89f17bd00f473bd088888e3abc55e984
 
         # Movimiento válido: desapilar de origen y apilar en destino.
         disco = self.torres[origen].pop()
         self.torres[destino].push(disco)
         self.movimientos += 1
+<<<<<<< HEAD
         print(f"✓ Movimiento {self.movimientos}: {origen} -> {destino} (disco {disco})")
 
         self._verificar_victoria()
         return True
+=======
+        self.ultimo_movimiento = (origen, destino, disco)
+
+        self._verificar_victoria()
+        return True, f"Movimiento {self.movimientos}: {origen} -> {destino} (disco {disco})"
+>>>>>>> 65115aee89f17bd00f473bd088888e3abc55e984
 
     def _verificar_victoria(self) -> None:
         """
@@ -166,6 +228,7 @@ class TorresDeHanoi:
         """Número mínimo de movimientos necesarios: 2^n - 1."""
         return 2 ** self.num_discos - 1
 
+<<<<<<< HEAD
     # --- Visualización ----------------------------------------------------
 
     def _render_torre(self, nombre: str, ancho_max: int) -> List[str]:
@@ -202,10 +265,22 @@ class TorresDeHanoi:
             f"Movimientos realizados: {self.movimientos}  |  "
             f"Óptimo: {self.movimientos_optimos()}"
         )
+=======
+    # --- Estado para la interfaz -----------------------------------------
+
+    def estado_torres(self) -> Dict[str, List[int]]:
+        """
+        Devuelve los discos de cada torre desde la base hasta la cima.
+        Ejemplo: {"A": [4, 3, 2, 1], "B": [], "C": []}
+        Útil para que las interfaces dibujen las torres.
+        """
+        return {nombre: self.torres[nombre].to_list() for nombre in ("A", "B", "C")}
+>>>>>>> 65115aee89f17bd00f473bd088888e3abc55e984
 
     # --- Solución automática (demostración educativa) --------------------
 
     def resolver(self, n: Optional[int] = None, origen: str = "A",
+<<<<<<< HEAD
                  auxiliar: str = "B", destino: str = "C") -> None:
         """
         Resuelve el juego de forma recursiva (algoritmo clásico).
@@ -294,6 +369,49 @@ def main() -> None:
             break
         else:
             print("✗ Opción no válida.")
+=======
+                 auxiliar: str = "B", destino: str = "C") -> List[str]:
+        """
+        Devuelve la lista de movimientos de la solución óptima (2^n - 1),
+        en el formato "ORIGEN>DESTINO" (ej. "A>C"). No modifica el juego:
+        la interfaz decide cómo aplicarlos (paso a paso o animación).
+        """
+        if n is None:
+            n = self.num_discos
+        movimientos: List[str] = []
+        self._resolver_rec(n, origen, auxiliar, destino, movimientos)
+        return movimientos
+
+    def _resolver_rec(self, n: int, origen: str, auxiliar: str,
+                      destino: str, movimientos: List[str]) -> None:
+        """Recursión clásica del algoritmo de las Torres de Hanoi."""
+        if n == 1:
+            movimientos.append(f"{origen}>{destino}")
+            return
+        self._resolver_rec(n - 1, origen, destino, auxiliar, movimientos)
+        movimientos.append(f"{origen}>{destino}")
+        self._resolver_rec(n - 1, auxiliar, origen, destino, movimientos)
+
+
+def main() -> None:
+    """Punto de entrada: permite elegir entre la interfaz gráfica o la consola."""
+    print("=" * 50)
+    print("   TORRES DE HANOI — Aprende sobre PILAS (Stacks)")
+    print("=" * 50)
+    print("1. Jugar con GRÁFICOS (ventana)")
+    print("2. Jugar por CONSOLA")
+    print("3. Salir")
+    opcion = input("Elige una opción: ").strip()
+
+    if opcion == "1":
+        from hanoi_grafico import main_grafico
+        main_grafico()
+    elif opcion == "2":
+        from hanoi_consola import main_consola
+        main_consola()
+    else:
+        print("¡Hasta luego!")
+>>>>>>> 65115aee89f17bd00f473bd088888e3abc55e984
 
 
 if __name__ == "__main__":
