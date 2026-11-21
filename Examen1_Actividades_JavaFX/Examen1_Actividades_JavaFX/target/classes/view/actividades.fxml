@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+
+<!-- Base visual: sustituya el texto central por el formulario del examen. -->
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="examen.actividades.controller.ActividadController"
+            prefWidth="900.0" prefHeight="620.0">
+    <center>
+        <Label text="Construya aquí el formulario indicado en el enunciado." />
+    </center>
+</BorderPane>

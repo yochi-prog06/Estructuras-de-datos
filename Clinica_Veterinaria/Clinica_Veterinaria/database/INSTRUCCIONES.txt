@@ -1,0 +1,4 @@
+EXAMEN FINAL: cree aquí veterinaria.sql.
+No se proporciona el script resuelto. Debe implementar la estructura, cuentas,
+procedimientos almacenados y permisos indicados en el enunciado.
+No cargue en Git contraseñas reales ni un archivo .env.
